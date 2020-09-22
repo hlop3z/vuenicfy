@@ -1,4 +1,8 @@
-# Cookie-Cutter Sanic, Vuexm, Vuetify, Axios
+# Cookie-Cutter For
+* Sanic
+* Vuex
+* Vuetify
+* Axios
 
 # New File
 ```
