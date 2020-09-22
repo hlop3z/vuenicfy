@@ -1,10 +1,10 @@
-import python_skeleton
+import vuenicfy
 
 # Modules
-print( python_skeleton.plugins )
+print( vuenicfy.plugins )
 
 # Class
-python_skeleton.__demo__.Plugin().hello()
+vuenicfy.__demo__.Plugin().hello()
 
 # Def
-python_skeleton.__demo__.hello()
+vuenicfy.__demo__.hello()
