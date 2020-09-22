@@ -28,7 +28,7 @@ print_args(1,2)
 bp = vuenicfy.vuetify.Blueprint('user')
 
 @bp.route
-def bad_moffo(name): pass
+def bad_moffo(name): print('bad moffo')
 
 #bad_moffo('hello')
-print( bp.blueprints.bad_moffo )
+print( bp.blueprints.bad_moffo() )
