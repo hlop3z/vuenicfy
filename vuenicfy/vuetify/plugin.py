@@ -66,12 +66,18 @@ class Blueprint:
             bp_name = f'''{ cls.name }/{ name }'''
             if bp_name in PLUGINS: raise Exception(f'''{ bp_name } - Already Registered!''')
             clean_form = { k:None for k in fields }
-            PLUGINS[ bp_name ] = lambda: function(clean_form)
+
+            def fake(clean_form, *args, **kwargs)
+                return function(clean_form, *args, **kwargs)
+
+            PLUGINS[ bp_name ] = fake
+
             @functools.wraps(function)
             def wrapper(*args, **kwargs):
                 results = function(*args, **kwargs)
                 return results
             return wrapper
+
         return real_decorator
 
 
