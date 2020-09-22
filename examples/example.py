@@ -13,21 +13,21 @@ import vuenicfy
 # Def
 #vuenicfy.__demo__.hello()
 data = vuenicfy.vuetify.create()
-print( data )
 data = vuenicfy.vuetify.records()
 print( data )
 data = vuenicfy.vuetify.update()
-print( data )
 data = vuenicfy.vuetify.delete()
-print( data )
 
 @vuenicfy.vuetify.decorator("arg1", "arg2")
 def print_args(*args): pass
-print_args(1,2)
 
 bp = vuenicfy.vuetify.Blueprint('user')
 
-@bp.route
-def bad_moffo(name=None): print('bad moffo')
+@bp.route(fields=['name'])
+def bad_moffo(form):
+    form['name'] = 'ablaze'
+    return form
 
-bp.blueprints.bad_moffo()
+#print( bp.urls )
+d = bp.plugins['user/bad_moffo']()
+print( d )

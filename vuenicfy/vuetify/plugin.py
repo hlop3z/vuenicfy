@@ -46,23 +46,33 @@ def decorator(arg1=None, arg2=None):
     return real_decorator
 
 
-class Skeleton: pass
+PLUGINS = dict()
 
 @register_plugin
 class Blueprint:
     def __init__(self, name=None):
+        self.name = name
         self.blueprints = type(name, (), {})
 
-    def route(cls, function):
-        """ decorator without arguments """
-        name = function.__name__
-        setattr(cls.blueprints, name, function)
-        @functools.wraps(function)
-        def wrapper(*args, **kwargs):
-            results = function(*args, **kwargs)
-            return results
-        return wrapper
+    @property
+    def plugins(self): return PLUGINS
 
+    @property
+    def urls(self): return list(PLUGINS.keys())
+
+    def route(cls, fields=[], arg1=None):
+        def real_decorator(function):
+            name = function.__name__
+            bp_name = f'''{ cls.name }/{ name }'''
+            if bp_name in PLUGINS: raise Exception(f'''{ bp_name } - Already Registered!''')
+            clean_form = { k:None for k in fields }
+            PLUGINS[ bp_name ] = lambda: function(clean_form)
+            @functools.wraps(function)
+            def wrapper(*args, **kwargs):
+                results = function(*args, **kwargs)
+                return results
+            return wrapper
+        return real_decorator
 
 
 #dyClass = lambda name: type(name, (), {})
