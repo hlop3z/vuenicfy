@@ -1,7 +1,11 @@
+import sys
+
+sys.path.append('../')
+
 import vuenicfy
 
 # Modules
-print( vuenicfy.plugins )
+print( vuenicfy.__plugins__ )
 
 # Class
 vuenicfy.__demo__.Plugin().hello()
