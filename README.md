@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
 ```
 
-# run
+# Run
 ```
 python3.7 project.py myapp
 ```
