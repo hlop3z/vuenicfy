@@ -1,6 +1,7 @@
 # Cookie-Cutter Web-Framework
 * Sanic
 * Vuex
+* Jinja2
 * Vuetify
 * Axios
 
