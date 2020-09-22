@@ -20,3 +20,15 @@ data = vuenicfy.vuetify.update()
 print( data )
 data = vuenicfy.vuetify.delete()
 print( data )
+
+@vuenicfy.vuetify.decorator("arg1", "arg2")
+def print_args(*args): pass
+print_args(1,2)
+
+bp = vuenicfy.vuetify.Blueprint('user')
+
+@bp.route
+def bad_moffo(name): pass
+
+#bad_moffo('hello')
+print( bp.blueprints.bad_moffo )
