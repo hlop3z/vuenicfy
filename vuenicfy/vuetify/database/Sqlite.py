@@ -30,8 +30,9 @@ class SQLiteORM:
             _fields = ",".join( [ '?' for k in kwargs.keys() ] )
             data    = self.tx.execute( f'''INSERT INTO { self.name }({ fields }) VALUES ({ _fields });''', (*kwargs.values(),) )
             self.conn.commit()
+            data    = True
         except:
-            data = False
+            data    = False
         return data
 
 
@@ -41,8 +42,9 @@ class SQLiteORM:
             _fields = ",".join( [ f'''{ k }=?''' for k in kwargs.keys() ] )
             data    = self.tx.execute( f'''UPDATE { self.name } SET { _fields } WHERE { _form };''', (*kwargs.values(),*__query__.values(),) )
             self.conn.commit()
+            data    = True
         except:
-            data = False
+            data    = False
         return data
 
 
@@ -51,8 +53,9 @@ class SQLiteORM:
             _fields = ",".join( [ f'''{ k }=?''' for k in kwargs.keys() ] )
             data    = self.tx.execute( f'''DELETE FROM { self.name } WHERE { _fields };''', (*kwargs.values(),) )
             self.conn.commit()
+            data    = True
         except:
-            data = False
+            data    = False
         return data
 
 
