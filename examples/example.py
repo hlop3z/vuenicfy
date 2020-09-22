@@ -11,4 +11,5 @@ print( vuenicfy.__plugins__ )
 vuenicfy.__demo__.Plugin().hello()
 
 # Def
-vuenicfy.__demo__.hello()
+#vuenicfy.__demo__.hello()
+vuenicfy.vuetify.hello()

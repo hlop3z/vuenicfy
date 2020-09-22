@@ -1,4 +1,3 @@
-from . import register_plugin
 import sqlite3
 
 class SQLiteORM:
@@ -64,7 +63,6 @@ def dict_factory(cursor, row):
     return d
 
 
-@register_plugin
 class Sqlite:
     def __init__(self, name=':memory:'):
         connection = sqlite3.connect( name )

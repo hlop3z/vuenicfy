@@ -22,6 +22,7 @@ include LICENSE.txt
 include CONFIG.json
 include requirements.txt
 
+{ GET_DATA_FILES('data') }
 { GET_DATA_FILES('docs') }
 { GET_DATA_FILES('static') }
 { GET_DATA_FILES('views') }

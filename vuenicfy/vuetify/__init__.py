@@ -1,3 +1,9 @@
+from . import database
+
+frontend = database.Sqlite('data/frontend.db')
+backend  = database.Sqlite('data/backend.db')
+
+
 from importlib import import_module
 from importlib import resources
 
