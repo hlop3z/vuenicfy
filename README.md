@@ -1,4 +1,4 @@
-# Cookie-Cutter Python Module
+# Cookie-Cutter Sanic, Vuexm, Vuetify, Axios
 
 # New File
 ```
