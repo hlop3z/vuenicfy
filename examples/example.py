@@ -23,11 +23,11 @@ def print_args(*args): pass
 
 bp = vuenicfy.vuetify.Blueprint('user')
 
-@bp.route(fields=['name'])
-def bad_moffo(form):
-    form['name'] = 'ablaze'
-    return form
+@bp.route(fields=['name', 'idz'])
+def bad_moffo(form, update):
+    print( form )
+    return update
 
 #print( bp.urls )
-d = bp.plugins['user/bad_moffo']()
+d = bp.plugins['user/bad_moffo']({ "name":'ablaze', "id":'ablaze' })
 print( d )

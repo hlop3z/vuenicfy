@@ -67,8 +67,12 @@ class Blueprint:
             if bp_name in PLUGINS: raise Exception(f'''{ bp_name } - Already Registered!''')
             clean_form = { k:None for k in fields }
 
-            def fake(clean_form, *args, **kwargs)
-                return function(clean_form, *args, **kwargs)
+            def fake(update):
+                _valid = list(filter(lambda x: x is not None, [ k if k in fields else None for k in update.keys() ]))
+                valid  = { k:update[k] for k in _valid }
+                form   = { k:None for k in fields }
+                form.update( valid )
+                return function(clean_form, form)
 
             PLUGINS[ bp_name ] = fake
 
