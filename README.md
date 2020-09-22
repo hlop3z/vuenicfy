@@ -1,4 +1,4 @@
-# Cookie-Cutter For
+# Cookie-Cutter Web-Framework
 * Sanic
 * Vuex
 * Vuetify
