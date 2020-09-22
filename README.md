@@ -4,7 +4,7 @@
 ```
 nano project.py
 ```
-# Code (URL)
+# Code ( Copy )
 ```
 import subprocess, argparse, json, pathlib, shutil, os
 
