@@ -81,18 +81,17 @@ def get_field_info(fields):
 
 
 class Schema:
-    def __init__(self, __name__ = None, **kwargs):
+    def __init__(self, **kwargs):
         self.schema = kwargs
         self.info   = get_field_info( kwargs )
+
 
     def setup(self, form):
         fields       = self.schema
         info         = self.info
-
         # Required Fields
         error_data   = [ k for k in info.required if k not in form ]
         if error_data:  return RESPONSE(True, error_data, 'required')
-
         # Choice Fields
         for k in [ k for k in info.choices if k in form ]:
             if not isinstance(form[ k ], list): val = [ form[ k ] ]
@@ -100,26 +99,21 @@ class Schema:
             found_error = [x for x in val if x not in fields[ k ]['choices'] ]
             if found_error: error_data.append( k )
         if error_data:  return RESPONSE(True, error_data, 'choices')
-
         # Rule Fields
         for k in [ x for x in info.rules if x in form ]:
             valid = all([ r( form[ k ] ) for r in fields[ k ]['rules'] ])
             if not valid: error_data.append( k )
         if error_data:  return RESPONSE(True, error_data, 'rules')
-
         # Filters Fields
         for k in [ x for x in info.filters if x in form ]:
             form[ k ] = replace( form[ k ], fields[ k ]['filters'] )
-
         # Regex Fields
         for k in [ x for x in info.regex if x in form ]:
             isvalid = all([  isRegex( r, form[ k ] ) for r in fields[ k ]['regex']  ])
             if not isvalid: error_data.append( k )
         if error_data:  return RESPONSE(True, error_data, 'regex')
-
         # Automated Fields
         for k in info.auto: form[ k ] = fields[ k ]['default']()
-
         # Method Fields
         for k in info.method:
              if k in form: form[ k ] = fields[ k ]['method']( form[ k ] )
@@ -135,6 +129,7 @@ class Schema:
                 del schema[ k ]
             return RESPONSE(False, schema, 'update')
         return response
+
 
     def create(self, form):
         response = self.setup( form )
