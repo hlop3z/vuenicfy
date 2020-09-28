@@ -6,7 +6,12 @@
 * Vuex
 * Vuetify
 
-# New File
+# OR
+```
+git clone https://github.com/hlop3z/vuenicfy
+```
+
+# New File (optional way)
 ```
 nano project.py
 ```
