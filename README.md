@@ -6,7 +6,7 @@
 * Vuex
 * Vuetify
 
-# OR
+# Clone
 ```
 git clone https://github.com/hlop3z/vuenicfy
 ```
