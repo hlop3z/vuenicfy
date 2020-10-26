@@ -1,7 +1,8 @@
 import sys
 
-sys.path.append('../')
+#sys.path.append('../')
+sys.path.append('../vuenicfy')
 
-import python_skeleton
+import vuenicfy
 
-print( python_skeleton.plugins )
+print( vuenicfy.schemas )

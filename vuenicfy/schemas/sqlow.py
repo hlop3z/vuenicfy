@@ -92,27 +92,51 @@ def make_sql_update(form=None, query=None, sqlite=False):
 
 
 
+def order_by(sort=None):
+    if sort is None           : OUTPUT=f"{ offset_text }"
+    elif sort.startswith('-') : OUTPUT=f"ORDER BY { sort.replace('-', '', 1) } DESC"
+    else                      : OUTPUT=f"ORDER BY { sort } ASC"
+    return OUTPUT
+
+
+
+def pagination(page=None, size=None):
+    offset = (page - 1) * size
+    if offset>0: offset_text = f"LIMIT { size } OFFSET { offset }"
+    else       : offset_text = f"LIMIT { size }"
+    return offset_text
+
+
+
 class Sqlow:
-    def __init__(self, table=None, sqlite=False):
+    def __init__(self, table=None, pk="id", sqlite=False):
         self.table  = table
+        self.pk     = pk
         self.sqlite = sqlite
 
-    def find(self, query={}, fields=['*']):
+    def find(self, query={}, fields=['*'], sort_by=None, page=None):
         _query, args = make_sql_where(query = query, sqlite = self.sqlite)
-        if not self.sqlite: return (f'SELECT { ",".join( fields ) } FROM { self.table } { _query if _query else "" };', *args)
-        return                     (f'SELECT { ",".join( fields ) } FROM { self.table } { _query if _query else "" };', (*args,))
+        queryText = f'SELECT { ",".join( fields ) } FROM { self.table } { _query if _query else "" }'
+        if sort_by: queryText += f" { order_by( sort_by ) }"
+        if page   : queryText += f" { pagination( **page ) }"
+        if not self.sqlite: return ( f"{ queryText };", *args )
+        return                     ( f"{ queryText };", (*args,) )
 
     def create(self, form={}):
-        if not self.sqlite: return (f'''INSERT INTO { self.table }({ ",".join( form.keys() ) }) VALUES ({ ",".join( [f"${ i+1 }" for i,k in enumerate(form.keys())] ) }) RETURNING id;''', *form.values())
-        else              : _fields = ",".join( ["?" for k in form.keys()] )
-        return (f'''INSERT INTO { self.table }({ ",".join( form.keys() ) }) VALUES ({ ",".join( ["?" for k in form.keys()] ) });''', (*form.values(),))
+        pgkeys = lambda: ",".join( [f"${ i+1 }" for i,k in enumerate(form.keys())] )
+        ltkeys = lambda: ",".join( ["?" for k in form.keys()] )
+        queryText = lambda ks: f'''INSERT INTO { self.table }({ ",".join( form.keys() ) }) VALUES ({ ks })'''
+        if not self.sqlite: return (f"{ queryText( pgkeys() ) } RETURNING *;", *form.values())
+        return (f"{ queryText( ltkeys() ) };", (*form.values(),))
 
     def update(self, form=None, query=None):
         _query, args = make_sql_update(form = form, query = query, sqlite = self.sqlite)
-        if not self.sqlite: return (f'UPDATE { self.table } { _query };', *args)
-        return                     (f'UPDATE { self.table } { _query };', (*args,))
+        queryText = f'UPDATE { self.table } { _query };'
+        if not self.sqlite: return ( queryText, *args )
+        return                     ( queryText, (*args,) )
 
     def delete(self, query=None):
         _query, args = make_sql_where(query = query, sqlite = self.sqlite)
-        if not self.sqlite: return (f'DELETE FROM { self.table } { _query };', *args)
-        return                     (f'DELETE FROM { self.table } { _query };', (*args,))
+        queryText = f'DELETE FROM { self.table } { _query };'
+        if not self.sqlite: return ( queryText, *args )
+        return                     ( queryText, (*args,) )
